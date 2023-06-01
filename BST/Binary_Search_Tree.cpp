@@ -70,23 +70,6 @@ private:
         }
     }
 
-    bool ppofp(Node<T> *temp, T key) {
-        if (temp != nullptr) {
-            if (temp->key == key) {
-                return true;
-            }
-            else {
-                return ppofp(temp->left, key) || ppofp(temp->right, key);;
-            }
-        }
-        return false;
-    }
-
-    bool ppof(T key) {
-        Node<T> *temp = this->root;
-        return this->ppofp(temp, key);
-    }
-
 public:
     BST(T root) {
         this->root = new Node<T>(root);
@@ -153,7 +136,20 @@ public:
     }
 
     bool find(T key) {
-        return ppof(key);
+        Node<T> **temp = &root;
+        while ((*temp)->right != nullptr || (*temp)->left != nullptr) {
+            if ((*temp)->key < key) {
+                temp = &((*temp)->right);
+            } else if ((*temp)->key > key) {
+                temp = &((*temp)->left);
+            } else {
+                return true;
+            }
+        }
+        if ((*temp)->key == key) {
+            return true;
+        }
+        return false;
     }
 
     bool empty() {
@@ -205,6 +201,11 @@ public:
         }
     }
 
+    void clear() {
+        this->root = nullptr;
+        nodeCount = 0;
+    }
+
 
 };
 
@@ -227,8 +228,11 @@ int main() {
     cout << "Original BST:\t";
     bst->printInOrder();
 
-    int i = 30;
-    cout << "Remove "<< i << ":\t\t";
     bst->remove(50);
+    bst->remove(55);
+    bst->remove(30);
+    bst->remove(70);
+
+    cout << bst->find(40) << endl;
     bst->printInOrder();
 }
