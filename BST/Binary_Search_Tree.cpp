@@ -50,15 +50,15 @@ private:
                 cout << temp->key << endl;
             }
             count[0]++;
-            printInOrderPrivate(temp->left, count);
-            printInOrderPrivate(temp->right, count);
+            printPreOrderPrivate(temp->left, count);
+            printPreOrderPrivate(temp->right, count);
         }
     }
 
     void printPostOrderPrivate(Node<T> *temp, int* count) {
         if (temp != nullptr) {
-            printInOrderPrivate(temp->left, count);
-            printInOrderPrivate(temp->right, count);
+            printPostOrderPrivate(temp->left, count);
+            printPostOrderPrivate(temp->right, count);
 
             if (count[0] != nodeCount) {
                 cout << temp->key << ", ";
@@ -68,6 +68,23 @@ private:
             }
             count[0]++;
         }
+    }
+
+    bool ppofp(Node<T> *temp, T key) {
+        if (temp != nullptr) {
+            if (temp->key == key) {
+                return true;
+            }
+            else {
+                return ppofp(temp->left, key) || ppofp(temp->right, key);;
+            }
+        }
+        return false;
+    }
+
+    bool ppof(T key) {
+        Node<T> *temp = this->root;
+        return this->ppofp(temp, key);
     }
 
 public:
@@ -113,7 +130,7 @@ public:
 
     void printInOrder() {
         Node<T> *temp = this->root;
-        int* count;
+        int* count = new int[0];
         count[0] = 0;
 
         this->printInOrderPrivate(temp, count);
@@ -121,7 +138,7 @@ public:
 
     void printPreOrder() {
         Node<T> *temp = this->root;
-        int* count;
+        int* count = new int[0];
         count[0] = 0;
 
         this->printPreOrderPrivate(temp, count);
@@ -129,14 +146,21 @@ public:
 
     void printPostOrder() {
         Node<T> *temp = this->root;
-        int* count;
+        int* count = new int[0];
         count[0] = 0;
 
-        this->printPreOrderPrivate(temp, count);
+        this->printPostOrderPrivate(temp, count);
     }
 
-    bool remove(T key) {
+    bool find(T key) {
+        return ppof(key);
+    }
 
+    bool empty() {
+        if (root == nullptr) {
+            return true;
+        }
+        return false;
     }
 
 };
@@ -149,8 +173,9 @@ int main() {
     bst->insert(35);
     bst->insert(45);
     bst->insert(60);
-
-    bst->printInOrder();
+    cout << bst->find(80) << endl;
+    bst->printPreOrder();
+    bst->insert(90);
 
 
 }
