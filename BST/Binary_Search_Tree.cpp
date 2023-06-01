@@ -30,7 +30,7 @@ private:
     void printInOrderPrivate(Node<T> *temp, int* count) {
         if (temp != nullptr) {
             printInOrderPrivate(temp->left, count);
-            if (count[0] != nodeCount) {
+            if (count[0] != nodeCount - 1) {
                 cout << temp->key << ", ";
             }
             else {
@@ -43,7 +43,7 @@ private:
 
     void printPreOrderPrivate(Node<T> *temp, int* count) {
         if (temp != nullptr) {
-            if (count[0] != nodeCount) {
+            if (count[0] != nodeCount - 1) {
                 cout << temp->key << ", ";
             }
             else {
@@ -60,7 +60,7 @@ private:
             printPostOrderPrivate(temp->left, count);
             printPostOrderPrivate(temp->right, count);
 
-            if (count[0] != nodeCount) {
+            if (count[0] != nodeCount - 1) {
                 cout << temp->key << ", ";
             }
             else {
@@ -163,19 +163,72 @@ public:
         return false;
     }
 
+    bool remove(T key) {
+        Node<T> **temp = &root;
+        while ((*temp)->right != nullptr || (*temp)->left != nullptr) {
+            if ((*temp)->key < key) {
+                temp = &((*temp)->right);
+            }
+            else if ((*temp)->key > key) {
+                temp = &((*temp)->left);
+            }
+            else {
+                if ((*temp)->right == nullptr && (*temp)->left != nullptr) {
+                    *temp = (*temp)->left;
+                    nodeCount--;
+                    return true;
+                }
+                else if ((*temp)->left == nullptr && (*temp)->right != nullptr) {
+                    *temp = (*temp)->right;
+                    nodeCount--;
+                    return true;
+                }
+                else {
+                    Node<T> **temp2 = &((*temp)->right);
+                    while ((*temp2)->left != nullptr) {
+                        temp2 = &((*temp2)->left);
+                    }
+                    (*temp)->key = (*temp2)->key;
+                    *temp2 = nullptr;
+                    nodeCount--;
+                    return true;
+                }
+            }
+        }
+        if ((*temp)->key == key) {
+            *temp = nullptr;
+            nodeCount--;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
 };
 
 int main() {
-    BST<int> *bst = new BST<int>(40);
+    BST<int> *bst = new BST<int>();
+    bst->insert(40);
     bst->insert(30);
     bst->insert(50);
     bst->insert(25);
     bst->insert(35);
     bst->insert(45);
     bst->insert(60);
-    cout << bst->find(80) << endl;
-    bst->printPreOrder();
-    bst->insert(90);
+    bst->insert(70);
+    bst->insert(65);
+    bst->insert(75);
+    bst->insert(55);
+    bst->insert(56);
+    bst->insert(54);
 
+    cout << "Original BST:\t";
+    bst->printInOrder();
 
+    int i = 30;
+    cout << "Remove "<< i << ":\t\t";
+    bst->remove(50);
+    bst->printInOrder();
 }
