@@ -142,9 +142,7 @@ int main() {
     heap->pop_front();
     heap->print();
 
-    vector<int> arr = heap->heapSort();
+    heap->heapSort();
 
-    for (int x: arr) {
-        cout << x << " ";
-    }
+    heap->print();
 }
