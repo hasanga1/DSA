@@ -4,4 +4,4 @@ project(Hash_Tables)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Hash_Tables
-        "HashTable(Chaining).cpp")
+        "HashTable(Chaining).cpp" "HashTable(Liner Probing).cpp")

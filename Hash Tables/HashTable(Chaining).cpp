@@ -23,7 +23,7 @@ class HashTable {
 private:
     Node<K, V>* *array;
     long capacity;
-    double loadFactor;
+    double loadFactor = 0.75;
     long size = 0;
 
     void reHash() {
