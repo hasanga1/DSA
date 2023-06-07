@@ -74,7 +74,10 @@ public:
         for (Vertex<V>* vertex: vertices) {
             cout << vertex->getValue() << "\t\t\t";
             for (pair<Vertex<V>*, double> neighbour: vertex->getNeighbours()) {
-                cout << neighbour.first->getValue() << "(" << neighbour.second << ")" ;
+                cout << neighbour.first->getValue();
+                if (this->isWeighted) {
+                    cout << "(" << neighbour.second << ")";
+                }
                 if (neighbour != vertex->getNeighbours()[vertex->getNeighbours().size() - 1]) {
                     cout << ", ";
                 }
