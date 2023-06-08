@@ -68,6 +68,19 @@ public:
         }
     }
 
+    bool removeVertex(Vertex<V> *vertex) {
+        for (int i = 0; i < vertices.size(); i++) {
+            if (vertices[i] == vertex) {
+                this->vertices.erase(vertices.begin() + i, vertices.begin() + i + 1);
+                size--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void BFS()
+
     void print() {
         cout << "Vertex\t\tNeighbours" << endl;
         string weight = "";
@@ -89,7 +102,7 @@ public:
 };
 
 int main() {
-    Graph<int> *graph = new Graph<int>(true, true);
+    Graph<int> *graph = new Graph<int>(true, false);
 
     Vertex<int> *v0 = new Vertex<int>(0);
     Vertex<int> *v1 = new Vertex<int>(1);
@@ -99,9 +112,13 @@ int main() {
     graph->addVertex(v1);
     graph->addVertex(v2);
 
+    graph->print();
+
     graph->addConnection(v0, v1, 5);
     graph->addConnection(v2, v1, 10);
     graph->addConnection(v0, v2, 8);
+
+    graph->removeVertex(v2);
 
     graph->print();
 }
